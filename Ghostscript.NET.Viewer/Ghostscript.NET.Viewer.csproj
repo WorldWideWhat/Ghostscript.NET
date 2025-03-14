@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <OutputType>WinExe</OutputType>
     <SccProjectName></SccProjectName>
     <SccLocalPath></SccLocalPath>
@@ -10,6 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>_res\Ghostscript.NET.Viewer.Icon.ico</ApplicationIcon>

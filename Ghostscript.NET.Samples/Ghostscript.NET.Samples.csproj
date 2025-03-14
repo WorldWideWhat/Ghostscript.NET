@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Exe</OutputType>
     <SccProjectName></SccProjectName>
@@ -14,6 +14,7 @@
     <Copyright>Copyright © 2013-2021 Josip Habjan %28habjan%40gmail.com%29</Copyright>
     <AssemblyVersion>1.2.3</AssemblyVersion>
     <FileVersion>1.2.3</FileVersion>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -32,18 +33,18 @@
     <ProjectReference Include="..\Ghostscript.NET\Ghostscript.NET.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="IKVM" Version="8.1.5717.0" />
-    <PackageReference Include="itext" Version="8.0.3" />
-    <PackageReference Include="itext.commons" Version="8.0.3" />
-    <PackageReference Include="itext7" Version="8.0.3" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="IKVM" Version="8.11.2" />
+    <PackageReference Include="itext" Version="9.1.0" />
+    <PackageReference Include="itext.commons" Version="9.1.0" />
+    <PackageReference Include="itext7" Version="9.1.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.1" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
   </ItemGroup>
 </Project>
