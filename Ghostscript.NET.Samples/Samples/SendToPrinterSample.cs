@@ -47,8 +47,13 @@ namespace Ghostscript.NET.Samples
                 switches.Add("-dBATCH");
                 switches.Add("-dNOPAUSE");
                 switches.Add("-dNOSAFER");
+                switches.Add("-dPDFFitPage");
                 switches.Add("-dNumCopies=1");
+                switches.Add("-dNOPROMPT");
+                switches.Add("-dQUIET");
+                switches.Add("-dNoCancel");
                 switches.Add("-sDEVICE=mswinpr2");
+
                 switches.Add("-sOutputFile=%printer%" + printerName);
                 switches.Add("-f");
                 switches.Add(inputFile);

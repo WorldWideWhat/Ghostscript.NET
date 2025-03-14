@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using Ghostscript.NET;
 using Ghostscript.NET.Samples;
+using Ghostscript.NET.Samples.Samples;
 
 Console.WriteLine("Ghostscript.NET Samples");
 
@@ -49,7 +50,8 @@ List<ISample> samples = new()
     //new AddWatermarkSample(),
     //new DeviceUsageSample(),
     //new PipedOutputSample(),
-    //new SendToPrinterSample()
+    //new SendToPrinterSample(),
+    //new SendToPrinterPrintDocument()
 };
 
 foreach (ISample sample in samples)
