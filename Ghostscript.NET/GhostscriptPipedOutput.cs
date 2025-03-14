@@ -116,7 +116,9 @@ namespace Ghostscript.NET
                         if (_thread.ThreadState == ThreadState.Running)
                         {
                             // abort the thread
-                            _thread.Abort();
+                            _thread.Interrupt();
+                            _thread.Join();
+                            //_thread.Abort();
                         }
 
                         _thread = null;
