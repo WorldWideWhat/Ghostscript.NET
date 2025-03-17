@@ -34,27 +34,30 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
     public class Invoice : IExportableTransaction
     {
 
-        protected internal string documentName = null, documentCode = null, number = null, ownOrganisationFullPlaintextInfo = null, referenceNumber = null, shipToOrganisationID = null, shipToOrganisationName = null, shipToStreet = null, shipToZIP = null, shipToLocation = null, shipToCountry = null, buyerOrderReferencedDocumentID = null, invoiceReferencedDocumentID = null, buyerOrderReferencedDocumentIssueDateTime = null, ownForeignOrganisationID = null, ownOrganisationName = null, currency = null, paymentTermDescription = null;
+        protected internal string documentName, documentCode, number, ownOrganisationFullPlaintextInfo, referenceNumber, shipToOrganisationID, 
+                                  shipToOrganisationName, shipToStreet, shipToZIP, shipToLocation, shipToCountry, buyerOrderReferencedDocumentID, 
+                                  invoiceReferencedDocumentID, buyerOrderReferencedDocumentIssueDateTime, ownForeignOrganisationID, ownOrganisationName, 
+                                  currency, paymentTermDescription = string.Empty;
         protected internal DateTime? issueDate = null, dueDate = null;
         protected DateTime? deliveryDate = null;
         protected internal decimal? totalPrepaidAmount = null;
-        protected internal TradeParty sender = null, recipient = null, deliveryAddress = null;
+        protected internal TradeParty? sender = null, recipient = null, deliveryAddress = null;
         //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
         //ORIGINAL LINE: @JsonDeserialize(contentAs=Item.class) protected java.util.ArrayList<IZUGFeRDExportableItem> ZFItems = null;
-        protected internal List<IZUGFeRDExportableItem> ZFItems = null;
-        protected internal List<string> notes = null;
-        protected internal string sellerOrderReferencedDocumentID;
-        protected internal string contractReferencedDocument = null;
+        protected internal List<IZUGFeRDExportableItem>? ZFItems = null;
+        protected internal List<string>? notes = null;
+        protected internal string sellerOrderReferencedDocumentID = string.Empty;
+        protected internal string? contractReferencedDocument = null;
         //protected internal List<FileAttachment> xmlEmbeddedFiles = null;
 
         protected internal DateTime? detailedDeliveryDateStart = null;
         protected internal DateTime? detailedDeliveryPeriodEnd = null;
 
         //protected internal List<IZUGFeRDAllowanceCharge> Allowances = new List<IZUGFeRDAllowanceCharge>(), Charges = new List<IZUGFeRDAllowanceCharge>(), LogisticsServiceCharges = new List<IZUGFeRDAllowanceCharge>();
-        protected internal IZUGFeRDPaymentTerms paymentTerms = null;
+        protected internal IZUGFeRDPaymentTerms? paymentTerms = null;
         protected internal DateTime invoiceReferencedIssueDate;
-        protected internal string specifiedProcuringProjectID = null;
-        protected internal string specifiedProcuringProjectName = null;
+        protected internal string? specifiedProcuringProjectID = null;
+        protected internal string? specifiedProcuringProjectName = null;
 
         public Invoice()
         {

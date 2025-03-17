@@ -34,8 +34,8 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 	public class Contact : IZUGFeRDExportableContact
 	{
 
-		protected internal string name, phone, email, zip, street, location, country;
-		protected internal string fax = null;
+		protected internal string name, phone, email, zip, street, location, country = string.Empty;
+		protected internal string fax = string.Empty;
 
 		/// <summary>
 		///*

@@ -31,23 +31,23 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 
     public class ZUGFeRDExporter
     {
-        protected String? gsDLL = null;
-        protected String? sourcePDF = null;
+        protected string? gsDLL = null;
+        protected string? sourcePDF = null;
         protected bool noSourceCopy = false;
-        protected String profile = "EN16931"; // European Norm for e-Invoicing
+        protected string profile = "EN16931"; // European Norm for e-Invoicing
         protected int version = 2;
         protected IExportableTransaction? trans = null;
 
-        public ZUGFeRDExporter(String gsDLL)
+        public ZUGFeRDExporter(string gsDLL)
         {
             this.gsDLL = gsDLL;
         }
-        public ZUGFeRDExporter load(String PDFfilename)
+        public ZUGFeRDExporter load(string PDFfilename)
         {
-            String basename=Path.GetFileName(PDFfilename);
+            string basename=Path.GetFileName(PDFfilename);
             this.sourcePDF = Path.GetTempPath() + basename;
-            String d1=Path.GetDirectoryName(PDFfilename)+Path.DirectorySeparatorChar;
-            String d2=Path.GetTempPath();
+            string d1=Path.GetDirectoryName(PDFfilename)+Path.DirectorySeparatorChar;
+            string d2=Path.GetTempPath();
             if (d1.Equals(Path.GetTempPath())) {
                 noSourceCopy=true;
             } else {
@@ -67,33 +67,31 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
             return this;
         }
 
-        public ZUGFeRDExporter setProfile(String profile)
+        public ZUGFeRDExporter setProfile(string profile)
         {
             this.profile = profile;
             return this;
         }
 
 
-        public void export(String targetFilename)
+        public void export(string targetFilename)
         {
+            PDFA3Converter pc = new PDFA3Converter(gsDLL!);
 
-            Ghostscript.NET.PDFA3Converter.PDFA3Converter pc = new Ghostscript.NET.PDFA3Converter.PDFA3Converter(gsDLL);
-
-            ZUGFeRD2PullProvider zf2p = new ZUGFeRD2PullProvider();
+            ZUGFeRD2PullProvider zf2p = new();
             zf2p.setProfile(Profiles.getByName(profile));
-            zf2p.generateXML(trans);
-            System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            zf2p.generateXML(trans!);
 
-            string tempfilename = Path.GetTempPath() + "\\factur-x.xml";
+            string tempfilename = Path.Combine(Path.GetTempPath(), "factur-x.xml");
             File.WriteAllBytes(tempfilename, zf2p.getXML());
 
             pc.SetZUGFeRDVersion("2.1");
             pc.SetZUGFeRDProfile(Profiles.getByName("EN16931").getXMPName());
             pc.SetEmbeddedXMLFile(tempfilename);
-            pc.ConvertToPDFA3(sourcePDF, targetFilename);
-            File.Delete(Path.GetTempPath() + "\\factur-x.xml");
+            pc.ConvertToPDFA3(sourcePDF!, targetFilename);
+            File.Delete(Path.Combine(Path.GetTempPath(), "factur-x.xml"));
             if (!noSourceCopy) {
-                File.Delete(sourcePDF);
+                File.Delete(sourcePDF!);
             }
 
         }

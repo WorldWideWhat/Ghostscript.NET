@@ -29,7 +29,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 			 *
 			 * @return Name of document
 			 */
-		String getDocumentName()
+		string getDocumentName()
 		{
 			return "RECHNUNG";
 		}
@@ -49,7 +49,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return invoice number
 		 */
-		String getNumber()
+		string? getNumber()
 		{
 			return null;
 		}
@@ -78,7 +78,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 			return null;
 		}
 
-		String getContractReferencedDocument()
+		string? getContractReferencedDocument()
 		{
 			return null;
 		}
@@ -89,7 +89,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the contact person at the supplier side
 		 */
-		IZUGFeRDExportableTradeParty getSender()
+		IZUGFeRDExportableTradeParty? getSender()
 		{
 			return null;
 		}
@@ -101,7 +101,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return string with document subject
 		 */
-		String getSubjectNote()
+		string? getSubjectNote()
 		{
 			return null;
 		}
@@ -158,16 +158,9 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return Tax ID (not VAT ID) of the sender
 		 */
-		String getOwnTaxID()
+		string? getOwnTaxID()
 		{
-			if (getSender() != null)
-			{
-				return getSender().getTaxID();
-			}
-			else
-			{
-				return null;
-			}
+			return getSender()?.getTaxID();
 		}
 
 
@@ -176,16 +169,9 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return VAT ID (Umsatzsteueridentifikationsnummer) of the sender
 		 */
-		String getOwnVATID()
+		string? getOwnVATID()
 		{
-			if (getSender() != null)
-			{
-				return getSender().getVATID();
-			}
-			else
-			{
-				return null;
-			}
+            return getSender()?.getVATID();
 		}
 
 
@@ -194,7 +180,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the sender's identification
 		 */
-		String getOwnForeignOrganisationID()
+		string? getOwnForeignOrganisationID()
 		{
 			return null;
 		}
@@ -215,7 +201,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return three character currency of this invoice
 		 */
-		String getCurrency()
+		string? getCurrency()
 		{
 			return "EUR";
 		}
@@ -226,7 +212,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return get payment terms
 		 */
-		String getPaymentTermDescription()
+		string? getPaymentTermDescription()
 		{
 			return null;
 		}
@@ -237,7 +223,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the IZUGFeRDPaymentTerms of the invoice
 		 **/
-		IZUGFeRDPaymentTerms getPaymentTerms()
+		IZUGFeRDPaymentTerms? getPaymentTerms()
 		{
 			return null;
 		}
@@ -257,7 +243,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the ID of the document this document refers to
 		 */
-		String getReferenceNumber()
+		string? getReferenceNumber()
 		{
 			return null;
 		}
@@ -268,7 +254,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the sender's identification
 		 */
-		String getShipToOrganisationID()
+		string? getShipToOrganisationID()
 		{
 			return null;
 		}
@@ -279,7 +265,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the consignee's organisation name
 		 */
-		String getShipToOrganisationName()
+		string? getShipToOrganisationName()
 		{
 			return null;
 		}
@@ -290,7 +276,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return consignee street address
 		 */
-		String getShipToStreet()
+		string? getShipToStreet()
 		{
 			return null;
 		}
@@ -301,7 +287,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return consignee postal code
 		 */
-		String getShipToZIP()
+		string? getShipToZIP()
 		{
 			return null;
 		}
@@ -312,7 +298,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the consignee's city
 		 */
-		String getShipToLocation()
+		string? getShipToLocation()
 		{
 			return null;
 		}
@@ -323,7 +309,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the consignee's two character country iso code
 		 */
-		String getShipToCountry()
+		string? getShipToCountry()
 		{
 			return null;
 		}
@@ -334,7 +320,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the ID of the document
 		 */
-		String getSellerOrderReferencedDocumentID()
+		string? getSellerOrderReferencedDocumentID()
 		{
 			return null;
 		}
@@ -343,7 +329,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the ID of the document
 		 */
-		String getBuyerOrderReferencedDocumentID()
+		string? getBuyerOrderReferencedDocumentID()
 		{
 			return null;
 		}
@@ -353,7 +339,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the ID of the document
 		 */
-		String getInvoiceReferencedDocumentID()
+		string? getInvoiceReferencedDocumentID()
 		{
 			return null;
 		}
@@ -364,7 +350,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 *
 		 * @return the IssueDateTime in format CCYY-MM-DDTHH:MM:SS
 		 */
-		String getBuyerOrderReferencedDocumentIssueDateTime()
+		string? getBuyerOrderReferencedDocumentIssueDateTime()
 		{
 			return null;
 		}
@@ -386,7 +372,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 * @return the IZUGFeRDExportableTradeParty delivery address
 		 */
 
-		IZUGFeRDExportableTradeParty getDeliveryAddress()
+		IZUGFeRDExportableTradeParty? getDeliveryAddress()
 		{
 			return null;
 		}
@@ -425,17 +411,17 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 		 * additional text description
 		 * @return an array of strings of document wide "includedNotes" (descriptive text values)
 		 */
-		String[] getNotes()
+		string[]? getNotes()
 		{
 			return null;
 		}
 
-		String getSpecifiedProcuringProjectName()
+		string? getSpecifiedProcuringProjectName()
 		{
 			return null;
 		}
 
-		String getSpecifiedProcuringProjectID()
+		string? getSpecifiedProcuringProjectID()
 		{
 			return null;
 		}

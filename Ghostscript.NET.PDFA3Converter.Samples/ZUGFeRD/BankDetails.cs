@@ -29,7 +29,8 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 	/// </summary>
 	public class BankDetails : IZUGFeRDTradeSettlementPayment
 	{
-		protected internal string IBAN, BIC, accountName = null;
+		protected internal string IBAN, BIC;
+		private string? accountName = null;
 
 		public BankDetails(string IBAN, string BIC)
 		{
@@ -101,7 +102,7 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 
 		public string getAccountName()
 		{
-			return accountName;
+			return accountName??"";
 		}
 		public string getSettlementXML()
 		{
@@ -112,9 +113,9 @@ namespace Ghostscript.NET.PDFA3Converter.Samples.ZUGFeRD
 
 			}
 
-			string xml = "			<ram:SpecifiedTradeSettlementPaymentMeans>\n" + "				<ram:TypeCode>58</ram:TypeCode>\n" + "				<ram:Information>SEPA credit transfer</ram:Information>\n" + "				<ram:PayeePartyCreditorFinancialAccount>\n" + "					<ram:IBANID>" + XMLTools.encodeXML(getOwnIBAN()) + "</ram:IBANID>\n";
+			string xml = "			<ram:SpecifiedTradeSettlementPaymentMeans>\n" + "				<ram:TypeCode>58</ram:TypeCode>\n" + "				<ram:Information>SEPA credit transfer</ram:Information>\n" + "				<ram:PayeePartyCreditorFinancialAccount>\n" + "					<ram:IBANID>" + XMLTools.encodeXML(getIBAN()) + "</ram:IBANID>\n";
 			xml += accountNameStr;
-			xml += "				</ram:PayeePartyCreditorFinancialAccount>\n" + "				<ram:PayeeSpecifiedCreditorFinancialInstitution>\n" + "					<ram:BICID>" + XMLTools.encodeXML(getOwnBIC()) + "</ram:BICID>\n" + "				</ram:PayeeSpecifiedCreditorFinancialInstitution>\n" + "			</ram:SpecifiedTradeSettlementPaymentMeans>\n";
+			xml += "				</ram:PayeePartyCreditorFinancialAccount>\n" + "				<ram:PayeeSpecifiedCreditorFinancialInstitution>\n" + "					<ram:BICID>" + XMLTools.encodeXML(getBIC()) + "</ram:BICID>\n" + "				</ram:PayeeSpecifiedCreditorFinancialInstitution>\n" + "			</ram:SpecifiedTradeSettlementPaymentMeans>\n";
 			return xml;
 		}
 

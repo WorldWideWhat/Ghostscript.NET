@@ -44,8 +44,8 @@ namespace Ghostscript.NET.PDFA3Converter
     /// </summary>
     public class PDFA3Converter
     {
-        private readonly string? RGBICCFilePath = null;
-        private readonly string? PostScriptBigScriptPath = null;  
+        private readonly string RGBICCFilePath;
+        private readonly string PostScriptBigScriptPath;  
 
         protected string? GSDLLPath = null;
         protected string? xmlInvoicePath = null;
@@ -92,7 +92,8 @@ namespace Ghostscript.NET.PDFA3Converter
 
 
         public void PrepareICC()
-        {            
+        {
+
             StoreEmbeddedResourceLocally($"{Assembly.GetExecutingAssembly().GetName().Name}.assets.{RGBICCFilePath}", RGBICCFilePath);
         } // !PrepareICC()
 
