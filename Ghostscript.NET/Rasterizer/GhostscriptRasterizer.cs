@@ -296,7 +296,7 @@ namespace Ghostscript.NET.Rasterizer
 
         #region _viewer_DisplayPage
 
-        void _viewer_DisplayPage(object sender, GhostscriptViewerViewEventArgs e)
+        private void _viewer_DisplayPage(object sender, GhostscriptViewerViewEventArgs e)
         {
             if (e.Image != null)
             {

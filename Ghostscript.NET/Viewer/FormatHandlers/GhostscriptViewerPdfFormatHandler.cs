@@ -27,7 +27,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Drawing;
 using System.Globalization;
 
 namespace Ghostscript.NET.Viewer
@@ -163,11 +162,9 @@ namespace Ghostscript.NET.Viewer
                 {
                     case PDF_PAGES_TAG:
                         {
-                            string[] pages = rest.Split(new char[] { ' ' });
+                            string[] pages = rest.Split([' ']);
 
-                            int first, last;
-
-                            if (pages.Length >= 2 && int.TryParse(pages[0], out first) && int.TryParse(pages[1], out last))
+                            if (pages.Length >= 2 && int.TryParse(pages[0], out int first) && int.TryParse(pages[1], out int last))
                             {
                                 this.FirstPageNumber = first;
                                 this.LastPageNumber = last;
@@ -177,9 +174,7 @@ namespace Ghostscript.NET.Viewer
                         }
                     case PDF_PAGE_TAG:
                         {
-                            int number;
-
-                            if (int.TryParse(rest, out number))
+                            if (int.TryParse(rest, out int number))
                             {
                                 this.CurrentPageNumber = number;
                             }
@@ -188,15 +183,13 @@ namespace Ghostscript.NET.Viewer
                         }
                     case PDF_MEDIA_TAG:
                         {
-                            string[] mb = rest.Split(new char[] { ' ' });
-
-                            float llx, lly, urx, ury;
+                            string[] mb = rest.Split([' ']);
 
                             if (mb.Length >= 4 &&
-                                float.TryParse(mb[0].TrimStart('['), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out llx) &&
-                                float.TryParse(mb[1], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out lly) &&
-                                float.TryParse(mb[2], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out urx) &&
-                                float.TryParse(mb[3].TrimEnd(']'), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out ury))
+                                float.TryParse(mb[0].TrimStart('['), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float llx) &&
+                                float.TryParse(mb[1], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float lly) &&
+                                float.TryParse(mb[2], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float urx) &&
+                                float.TryParse(mb[3].TrimEnd(']'), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ury))
                             {
                                 this.MediaBox = new GhostscriptRectangle(llx, lly, urx, ury);
                             }
@@ -205,15 +198,13 @@ namespace Ghostscript.NET.Viewer
                         }
                     case PDF_CROP_TAG:
                         {
-                            string[] cb = rest.Split(new char[] { ' ' });
-
-                            float llx, lly, urx, ury;
+                            string[] cb = rest.Split([' ']);
 
                             if (cb.Length >= 4 &&
-                                float.TryParse(cb[0].TrimStart('['), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out llx) &&
-                                float.TryParse(cb[1], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out lly) &&
-                                float.TryParse(cb[2], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out urx) &&
-                                float.TryParse(cb[3].TrimEnd(']'), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out ury))
+                                float.TryParse(cb[0].TrimStart('['), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float llx) &&
+                                float.TryParse(cb[1], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float lly) &&
+                                float.TryParse(cb[2], NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float urx) &&
+                                float.TryParse(cb[3].TrimEnd(']'), NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ury))
                             {
                                 this.CropBox = new GhostscriptRectangle(llx, lly, urx, ury);
                             }
@@ -222,9 +213,7 @@ namespace Ghostscript.NET.Viewer
                         }
                     case PDF_ROTATE_TAG:
                         {
-                            int rotate;
-
-                            if (int.TryParse(rest, out rotate))
+                            if (int.TryParse(rest, out int rotate))
                             {
                                 while (rotate < 0)
                                 {
@@ -282,11 +271,10 @@ namespace Ghostscript.NET.Viewer
                 {
                     this.Execute("Page pdfshowpage_init");
                 }
+                return;
             }
-            else
-            {
-                throw new GhostscriptException("The page number falls outside the range of valid page numbers!");
-            }
+
+            throw new GhostscriptException("The page number falls outside the range of valid page numbers!");
         }
 
         #endregion
@@ -300,16 +288,13 @@ namespace Ghostscript.NET.Viewer
                 if (this.Viewer.Interpreter.LibraryRevision >= 10010)
                 {
                     this.Execute("Page pdfshowpage_finish");
+                    return;
                 }
-                else
-                {
-                    this.Execute("Page pdfshowpage");
-                }
+                this.Execute("Page pdfshowpage");
+                return;
             }
-            else
-            {
-                throw new GhostscriptException("The page number falls outside the range of valid page numbers!");
-            }
+            
+            throw new GhostscriptException("The page number falls outside the range of valid page numbers!");
         }
 
         #endregion

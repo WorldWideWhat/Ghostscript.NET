@@ -26,60 +26,33 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-
 namespace Ghostscript.NET.Viewer.DSC
 {
 
     internal class DSCToken
     {
 
-        #region Private variables
-
-        private long _startPosition;
-        private long _length;
-        private string _text;
-        private DSCTokenEnding _ending;
-
-        #endregion
-
         #region StartPosition
 
-        public long StartPosition
-        {
-            get { return _startPosition; }
-            set { _startPosition = value; }
-        }
+        public long StartPosition { get; set; }
 
         #endregion
 
         #region Length
 
-        public long Length
-        {
-            get { return _length; }
-            set { _length = value; }
-        }
+        public long Length { get; set; }
 
         #endregion
 
         #region Text
 
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; }
-        }
+        public string Text { get; set; }
 
         #endregion
 
         #region Ending
 
-        public DSCTokenEnding Ending
-        {
-            get { return _ending; }
-            set { _ending = value; }
-        }
+        public DSCTokenEnding Ending { get; set; }
 
         #endregion
 
@@ -87,7 +60,7 @@ namespace Ghostscript.NET.Viewer.DSC
 
         public override string ToString()
         {
-            return _text;
+            return Text;
         }
 
         #endregion

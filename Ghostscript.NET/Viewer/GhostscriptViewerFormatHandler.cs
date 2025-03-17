@@ -25,7 +25,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Drawing;
 
 namespace Ghostscript.NET.Viewer
 {
@@ -35,15 +34,8 @@ namespace Ghostscript.NET.Viewer
         #region Private variables
 
         private bool _disposed = false;
-        private GhostscriptViewer _viewer = null;
-        private int _firstPageNumber;
-        private int _lastPageNumber;
-        private int _currentPageNumber = 1;
-        private GhostscriptRectangle _mediaBox = GhostscriptRectangle.Empty;
-        private GhostscriptRectangle _boundingBox = GhostscriptRectangle.Empty;
-        private GhostscriptRectangle _cropBox = GhostscriptRectangle.Empty;
-        private GhostscriptPageOrientation _pageOrientation = GhostscriptPageOrientation.Portrait;
-        private bool _showPagePostScriptCommandInvoked = false;
+        private readonly GhostscriptViewer _viewer = null;
+
 
         #endregion
 
@@ -137,61 +129,37 @@ namespace Ghostscript.NET.Viewer
 
         #region FirstPageNumber
 
-        public int FirstPageNumber
-        {
-            get { return _firstPageNumber; }
-            set { _firstPageNumber = value; }
-        }
+        public int FirstPageNumber { get; set; }
 
         #endregion
 
         #region LastPageNumber
 
-        public int LastPageNumber
-        {
-            get { return _lastPageNumber; }
-            set { _lastPageNumber = value; }
-        }
+        public int LastPageNumber { get; set; }
 
         #endregion
 
         #region CurrentPageNumber
 
-        public int CurrentPageNumber
-        {
-            get { return _currentPageNumber; }
-            internal set { _currentPageNumber = value; }
-        }
+        public int CurrentPageNumber { get; set; } = 1;
 
         #endregion
 
         #region MediaBox
 
-        public GhostscriptRectangle MediaBox
-        {
-            get { return _mediaBox; }
-            set { _mediaBox = value; }
-        }
+        public GhostscriptRectangle MediaBox { get; set; } = GhostscriptRectangle.Empty;
 
         #endregion
 
         #region BoundingBox
 
-        public GhostscriptRectangle BoundingBox
-        {
-            get { return _boundingBox; }
-            set { _boundingBox = value; }
-        }
+        public GhostscriptRectangle BoundingBox { get; set; } = GhostscriptRectangle.Empty;
 
         #endregion
 
         #region CropBox
 
-        public GhostscriptRectangle CropBox
-        {
-            get { return _cropBox; }
-            set { _cropBox = value; }
-        }
+        public GhostscriptRectangle CropBox { get; set; } = GhostscriptRectangle.Empty;
 
         #endregion
 
@@ -199,7 +167,7 @@ namespace Ghostscript.NET.Viewer
 
         public bool IsMediaBoxSet
         {
-            get { return _mediaBox != GhostscriptRectangle.Empty; }
+            get { return MediaBox != GhostscriptRectangle.Empty; }
         }
 
         #endregion
@@ -208,7 +176,7 @@ namespace Ghostscript.NET.Viewer
 
         public bool IsBoundingBoxSet
         {
-            get { return _boundingBox != GhostscriptRectangle.Empty; }
+            get { return BoundingBox != GhostscriptRectangle.Empty; }
         }
 
         #endregion
@@ -217,35 +185,20 @@ namespace Ghostscript.NET.Viewer
 
         public bool IsCropBoxSet
         {
-            get { return _cropBox != GhostscriptRectangle.Empty; }
+            get { return CropBox != GhostscriptRectangle.Empty; }
         }
 
         #endregion
 
         #region PageOrientation
 
-        public GhostscriptPageOrientation PageOrientation
-        {
-            get { return _pageOrientation; }
-            set { _pageOrientation = value; }
-        }
+        public GhostscriptPageOrientation PageOrientation { get; set; } = GhostscriptPageOrientation.Portrait;
 
         #endregion
 
         #region ShowPageInvoked
 
-        internal bool ShowPagePostScriptCommandInvoked
-        {
-            get
-            {
-                return _showPagePostScriptCommandInvoked;
-            }
-            set
-            {
-                _showPagePostScriptCommandInvoked = value;
-            }
-        }
-
+        internal bool ShowPagePostScriptCommandInvoked { get; set; } = false;
         #endregion
 
     }

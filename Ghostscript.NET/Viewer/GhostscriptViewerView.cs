@@ -39,7 +39,7 @@ namespace Ghostscript.NET.Viewer
     {
         #region Private variables
 
-        private GhostscriptViewerImage _image;
+        private readonly GhostscriptViewerImage _image;
         private RectangleF _mediaBox;
 
         #endregion
@@ -56,19 +56,13 @@ namespace Ghostscript.NET.Viewer
 
         #region Image
 
-        public Bitmap Image
-        {
-            get { return _image.Bitmap; }
-        }
+        public Bitmap Image => _image.Bitmap;
 
         #endregion
 
         #region MediaBox
 
-        public RectangleF MediaBox
-        {
-            get { return _mediaBox; }
-        }
+        public RectangleF MediaBox => _mediaBox;
 
         #endregion
     }

@@ -57,13 +57,6 @@ namespace Ghostscript.NET
 
     public class GhostscriptDevice
     {
-
-        #region Private variables
-
-        private object _device;
-
-        #endregion
-
         #region Constructor
 
         public GhostscriptDevice()
@@ -81,11 +74,7 @@ namespace Ghostscript.NET
         #region Device
 
         [GhostscriptSwitch("-sDEVICE={0}")]
-        public virtual object Device
-        {
-            get { return _device; }
-            set { _device = value; }
-        }
+        public virtual object Device { get; set; }
 
         #endregion
 

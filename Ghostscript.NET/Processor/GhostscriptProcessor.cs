@@ -25,8 +25,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 
 namespace Ghostscript.NET.Processor
@@ -42,8 +40,8 @@ namespace Ghostscript.NET.Processor
         #region Private variables
 
         private bool _disposed = false;
-        private bool _processorOwnsLibrary = true;
-        private GhostscriptLibrary _gs;
+        private readonly bool _processorOwnsLibrary = true;
+        private readonly GhostscriptLibrary _gs;
         private GhostscriptStdIO _stdIO_Callback;
         private GhostscriptProcessorInternalStdIOHandler _internalStdIO_Callback;
         private gsapi_pool_callback _poolCallBack;

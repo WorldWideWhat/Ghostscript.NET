@@ -110,8 +110,7 @@ namespace Ghostscript.NET.Viewer
 
         public static GhostscriptViewerImage Create(int width, int height, int stride, PixelFormat format)
         {
-            GhostscriptViewerImage gvi = new GhostscriptViewerImage(width, height, stride, format);
-            return gvi;
+            return new GhostscriptViewerImage(width, height, stride, format);
         }
 
         #endregion
@@ -120,29 +119,24 @@ namespace Ghostscript.NET.Viewer
 
         internal void Lock()
         {
-            if (_bitmapData == null)
+            if(_bitmapData is not null)
             {
-                _bitmapData = _bitmap.LockBits(_rect, ImageLockMode.WriteOnly, _bitmap.PixelFormat);
+                return;
             }
+            _bitmapData = _bitmap.LockBits(_rect, ImageLockMode.WriteOnly, _bitmap.PixelFormat);
         }
 
         #endregion
 
         #region Scan0
 
-        internal IntPtr Scan0
-        {
-            get { return _bitmapData.Scan0; }
-        }
+        internal IntPtr Scan0 => _bitmapData.Scan0;
 
         #endregion
 
         #region Stride
 
-        public int Stride
-        {
-            get { return _bitmapData.Stride; }
-        }
+        public int Stride => _bitmapData.Stride;
 
         #endregion
 
@@ -161,28 +155,19 @@ namespace Ghostscript.NET.Viewer
 
         #region Width
 
-        public int Width
-        {
-            get { return _width; }
-        }
+        public int Width => _width;
 
         #endregion
 
         #region Height
 
-        public int Height
-        {
-            get { return _height; }
-        }
+        public int Height => _height;
 
         #endregion
 
         #region Bitmap
 
-        public Bitmap @Bitmap
-        {
-            get { return _bitmap; }
-        }
+        public Bitmap @Bitmap =>_bitmap;
 
         #endregion
 

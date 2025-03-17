@@ -40,9 +40,9 @@ namespace Ghostscript.NET.Viewer.DSC
         private bool _disposed = false;
         private Stream _stream;
         private BufferedStream _bufferedStream;
-        private bool _initiallyOwned = false;
-        private bool _isUnicode = false;
-        private bool _isLittleEndian = BitConverter.IsLittleEndian;
+        private readonly bool _initiallyOwned = false;
+        private readonly bool _isUnicode = false;
+        private readonly bool _isLittleEndian = BitConverter.IsLittleEndian;
 
         #endregion
 
@@ -175,7 +175,7 @@ namespace Ghostscript.NET.Viewer.DSC
                 // windows new line
                 else if (c == '\r' && this.PeekChar() == '\n' && (end & DSCTokenEnding.LineEnd) == DSCTokenEnding.LineEnd)
                 {
-                    this.ReadChar();
+                    _ = this.ReadChar();
 
                     token.Length = _bufferedStream.Position - 2 - token.StartPosition;
                     token.Text = text.ToString().Trim();
@@ -217,7 +217,7 @@ namespace Ghostscript.NET.Viewer.DSC
 
             _bufferedStream.Seek(start, SeekOrigin.Begin);
             byte[] buffer = new byte[count];
-            int readCount = _bufferedStream.Read(buffer, 0, count);
+            _ = _bufferedStream.Read(buffer, 0, count);
 
             _bufferedStream.Seek(bkpPos, SeekOrigin.Begin);
 
@@ -248,21 +248,18 @@ namespace Ghostscript.NET.Viewer.DSC
             { 
                 byte[] b = new byte[2];
 
-                _bufferedStream.Read(b, 0, 2);
+                _ = _bufferedStream.Read(b, 0, 2);
 
-                if(_isLittleEndian)
+                if (_isLittleEndian)
                 { 
                     return (int)(b[0] | b[1] << 8);
                 }
-                else
-                {
-                    return (int)(b[0] << 8 | b[1]);
-                }
+
+                return (int)(b[0] << 8 | b[1]);
+
             }
-            else
-            {
-                return _bufferedStream.ReadByte();
-            }
+            
+            return _bufferedStream.ReadByte();
         }
 
         #endregion
@@ -276,13 +273,12 @@ namespace Ghostscript.NET.Viewer.DSC
                 return -1;
             }
 
+            int res;
             if (_isUnicode)
             {
                 byte[] b = new byte[2];
 
-                _bufferedStream.Read(b, 0, 2);
-
-                int res = 0;
+                _ = _bufferedStream.Read(b, 0, 2);
 
                 if (_isLittleEndian)
                 {
@@ -297,14 +293,13 @@ namespace Ghostscript.NET.Viewer.DSC
 
                 return res;
             }
-            else
-            {
-                int res = _bufferedStream.ReadByte();
 
-                _bufferedStream.Position--;
+            res = _bufferedStream.ReadByte();
 
-                return res;
-            }
+            _bufferedStream.Position--;
+
+            return res;
+
         }
 
         #endregion

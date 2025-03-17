@@ -26,7 +26,6 @@
 
 using System;
 using System.IO;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Globalization;
 using Ghostscript.NET.Interpreter;
@@ -44,14 +43,14 @@ namespace Ghostscript.NET.Viewer
         private bool _progressiveUpdate = true;
         private int _progressiveUpdateInterval = 100;
         private GhostscriptStdIO _stdIoCallback = null;
-        private int _zoom_xDpi = 96;
-        private int _zoom_yDpi = 96;
+        //private int _zoom_xDpi = 96;
+        //private int _zoom_yDpi = 96;
         private bool _showPageAfterOpen = true;
-        private FileCleanupHelper _fileCleanupHelper = new FileCleanupHelper();
+        private readonly FileCleanupHelper _fileCleanupHelper = new();
         private int _graphicsAlphaBits = 4;
         private int _textAlphaBits = 4;
         private bool _epsClip = true;
-        private List<string> _customSwitches = new List<string>();
+        private List<string> _customSwitches = [];
 
         #endregion
 
@@ -164,10 +163,14 @@ namespace Ghostscript.NET.Viewer
 
         public void Open(Stream stream)
         {
-            if (stream == null)
+#if NETSTANDARD
+            if (stream == null) 
             {
                 throw new ArgumentNullException("stream");
             }
+#else
+            ArgumentNullException.ThrowIfNull(stream);
+#endif
 
             string path = StreamHelper.WriteToTemporaryFile(stream);
 
@@ -176,7 +179,7 @@ namespace Ghostscript.NET.Viewer
             this.Open(path);
         }
 
-        #endregion
+#endregion
 
         #region Open - path
 
@@ -196,6 +199,7 @@ namespace Ghostscript.NET.Viewer
 
         public void Open(Stream stream, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
+#if NETSTANDARD
             if (stream == null)
             {
                 throw new ArgumentNullException("stream");
@@ -205,7 +209,10 @@ namespace Ghostscript.NET.Viewer
             {
                 throw new ArgumentNullException("versionInfo");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(stream);
+            ArgumentNullException.ThrowIfNull(versionInfo);
+#endif
             string path = StreamHelper.WriteToTemporaryFile(stream);
 
             _fileCleanupHelper.Add(path);
@@ -213,7 +220,7 @@ namespace Ghostscript.NET.Viewer
             this.Open(path, versionInfo, dllFromMemory);
         }
 
-        #endregion
+#endregion
 
         #region Open - path, versionInfo, dllFromMemory
 
@@ -223,12 +230,14 @@ namespace Ghostscript.NET.Viewer
             {
                 throw new FileNotFoundException("Could not find input file.", path);
             }
-
+#if NETSTANDARD
             if (versionInfo == null)
             {
                 throw new ArgumentNullException("versionInfo");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(versionInfo, "versionInfo");
+#endif
             this.Close();
 
             _filePath = path;
@@ -238,17 +247,20 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
+#endregion
 
         #region Open - stream, library
 
         public void Open(Stream stream, byte[] library)
         {
+#if NETSTANDARD
             if (stream == null)
             {
                 throw new ArgumentNullException("stream");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(stream, "stream");
+#endif
             string path = StreamHelper.WriteToTemporaryFile(stream);
 
             _fileCleanupHelper.Add(path);
@@ -256,7 +268,7 @@ namespace Ghostscript.NET.Viewer
             this.Open(path, library);
         }
 
-        #endregion
+#endregion
 
         #region Open - path, library
 
@@ -266,12 +278,14 @@ namespace Ghostscript.NET.Viewer
             {
                 throw new FileNotFoundException("Could not find input file.", path);
             }
-
+#if NETSTANDARD
             if (library == null)
             {
                 throw new ArgumentNullException("library");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(library, "library");
+#endif
             this.Close();
 
             _filePath = path;
@@ -281,17 +295,20 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
+#endregion
 
         #region Open - versionInfo, dllFromMemory
 
         public void Open(GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
+#if NETSTANDARD
             if (versionInfo == null)
             {
                 throw new ArgumentNullException("versionInfo");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(versionInfo, "versionInfo");
+#endif
             this.Close();
 
             _filePath = string.Empty;
@@ -301,17 +318,20 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
+#endregion
 
         #region Open - library
 
         public void Open(byte[] library)
         {
+#if NETSTANDARD
             if (library == null)
             {
                 throw new ArgumentNullException("library");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(library);
+#endif
             this.Close();
 
             _filePath = string.Empty;
@@ -321,7 +341,7 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
+#endregion
 
         #region Open
 
@@ -363,7 +383,7 @@ namespace Ghostscript.NET.Viewer
 
             _interpreter.Setup(new GhostscriptViewerStdIOHandler(this, _formatHandler), new GhostscriptViewerDisplayHandler(this));
 
-            List<string> args = new List<string>();
+            List<string> args = [];
             args.Add("-gsnet");
             args.Add("-sDEVICE=display");
 
@@ -470,7 +490,7 @@ namespace Ghostscript.NET.Viewer
                             "%%BeginPageSetup\n" +
                             "<<\n");
 
-            this.Interpreter.Run(string.Format("/HWResolution [{0} {1}]\n", _zoom_xDpi, _zoom_yDpi));
+            this.Interpreter.Run(string.Format("/HWResolution [{0} {1}]\n", ZoomXDpi, ZoomYDpi));
 
             GhostscriptRectangle mediaBox = _formatHandler.MediaBox;
             GhostscriptRectangle boundingBox = _formatHandler.BoundingBox;
@@ -639,8 +659,8 @@ namespace Ghostscript.NET.Viewer
 
         public bool Zoom(float scale, bool test = false)
         {
-            int tmpZoopX = (int)(_zoom_xDpi * scale + 0.5);
-            int tmpZoomY = (int)(_zoom_yDpi * scale + 0.5);
+            int tmpZoopX = (int)(ZoomXDpi* scale + 0.5);
+            int tmpZoomY = (int)(ZoomYDpi * scale + 0.5);
 
             if (tmpZoopX < 39)
                 return false;
@@ -650,8 +670,8 @@ namespace Ghostscript.NET.Viewer
 
             if (!test)
             {
-                _zoom_xDpi = tmpZoopX;
-                _zoom_yDpi = tmpZoomY;
+                ZoomXDpi = tmpZoopX;
+                ZoomYDpi = tmpZoomY;
             }
 
             return true;
@@ -690,8 +710,8 @@ namespace Ghostscript.NET.Viewer
         public GhostscriptViewerState SaveState()
         {
             GhostscriptViewerState state = new GhostscriptViewerState();
-            state.XDpi = _zoom_xDpi;
-            state.YDpi = _zoom_yDpi;
+            state.XDpi = ZoomXDpi;
+            state.YDpi = ZoomYDpi;
             state.CurrentPage = _formatHandler.CurrentPageNumber;
             state.ProgressiveUpdate = _progressiveUpdate;
             return state;
@@ -703,8 +723,8 @@ namespace Ghostscript.NET.Viewer
 
         public void RestoreState(GhostscriptViewerState state)
         {
-            _zoom_xDpi = state.XDpi;
-            _zoom_yDpi = state.YDpi;
+            ZoomXDpi= state.XDpi;
+            ZoomYDpi = state.YDpi;
             _formatHandler.CurrentPageNumber = state.CurrentPage;
             _progressiveUpdate = state.ProgressiveUpdate;
         }
@@ -780,21 +800,12 @@ namespace Ghostscript.NET.Viewer
 
         #region ZoomXDpi
 
-        internal int ZoomXDpi
-        {
-            get { return _zoom_xDpi; }
-            set { _zoom_xDpi = value; }
-        }
-
+        internal int ZoomXDpi { get; set; } = 96;
         #endregion
 
         #region ZoomYDpi
 
-        internal int ZoomYDpi
-        {
-            get { return _zoom_yDpi; }
-            set { _zoom_yDpi = value; }
-        }
+        internal int ZoomYDpi { get; set; } = 96;
 
         #endregion
 

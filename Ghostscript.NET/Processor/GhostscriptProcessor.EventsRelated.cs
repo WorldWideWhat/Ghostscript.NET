@@ -58,24 +58,15 @@ namespace Ghostscript.NET.Processor
 
     public class GhostscriptProcessorProcessingEventArgs : EventArgs
     {
-        private int _currentPage;
-        private int _totalPages;
-
         internal GhostscriptProcessorProcessingEventArgs(int currentPage, int totalPages)
         {
-            _currentPage = currentPage;
-            _totalPages = totalPages;
+            CurrentPage = currentPage;
+            CurrentPage = totalPages;
         }
 
-        public int CurrentPage
-        {
-            get { return _currentPage; }
-        }
+        public int CurrentPage { get; private set; }
 
-        public int TotalPages
-        {
-            get { return _totalPages; }
-        }
+        public int TotalPages {  get; private set; }
     }
 
     #endregion
@@ -84,17 +75,12 @@ namespace Ghostscript.NET.Processor
 
     public class GhostscriptProcessorErrorEventArgs : EventArgs
     {
-        private string _errorMessage;
-
         public GhostscriptProcessorErrorEventArgs(string errorMessage)
         {
-            _errorMessage = errorMessage;
+            Message = errorMessage;
         }
 
-        public string Message
-        {
-            get { return _errorMessage; }
-        }
+        public string Message {  get; private set; }
     }
 
     #endregion

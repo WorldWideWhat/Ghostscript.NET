@@ -24,7 +24,6 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 using System.Text;
 
 namespace Ghostscript.NET.Viewer
@@ -34,8 +33,8 @@ namespace Ghostscript.NET.Viewer
 
         #region Private variables
 
-        private GhostscriptViewer _viewer;
-        private GhostscriptViewerFormatHandler _formatHandler;
+        private readonly GhostscriptViewer _viewer;
+        private readonly GhostscriptViewerFormatHandler _formatHandler;
         private StringBuilder _outputMessages = new StringBuilder();
         private StringBuilder _errorMessages = new StringBuilder();
 
@@ -57,10 +56,11 @@ namespace Ghostscript.NET.Viewer
         {
             input = string.Empty;
 
-            if (_formatHandler != null)
+            if (_formatHandler is null)
             {
-                _formatHandler.StdInput(out input, count);
+                return;
             }
+            _formatHandler.StdInput(out input, count);
         }
 
         #endregion
@@ -82,10 +82,7 @@ namespace Ghostscript.NET.Viewer
 
                     _viewer.StdOutput(line);
 
-                    if (_formatHandler != null)
-                    {
-                        _formatHandler.StdOutput(line);
-                    }
+                    _formatHandler?.StdOutput(line);
 
                     rIndex = _outputMessages.ToString().IndexOf("\r\n");
                 }
@@ -111,10 +108,7 @@ namespace Ghostscript.NET.Viewer
 
                     _viewer.StdError(line);
 
-                    if (_formatHandler != null)
-                    {
-                        _formatHandler.StdError(line);
-                    }
+                    _formatHandler?.StdError(line);
 
                     rIndex = _errorMessages.ToString().IndexOf("\r\n");
                 }

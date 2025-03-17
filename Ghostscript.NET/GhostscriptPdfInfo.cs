@@ -233,7 +233,7 @@ namespace Ghostscript.NET
                     pic.Page = pageNumber;
                     pic.IsValid = false;
 
-                    string[] lineParts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] lineParts = line.Split([' '], StringSplitOptions.RemoveEmptyEntries);
 
                     if (lineParts.Length == 6)
                     {

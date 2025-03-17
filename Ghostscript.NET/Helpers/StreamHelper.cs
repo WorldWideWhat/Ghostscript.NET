@@ -52,7 +52,7 @@ namespace Ghostscript.NET
 
             byte[] test = new byte[4];
 
-            stream.Read(test, 0, 4);
+            _ = stream.Read(test, 0, 4);
 
             stream.Position = 0;
 
@@ -65,7 +65,7 @@ namespace Ghostscript.NET
                 if (stream.Length > 23)
                 {
                     test = new byte[23];
-                    stream.Read(test, 0, 23);
+                    _ = stream.Read(test, 0, 23);
 
                     stream.Position = 0;
 
@@ -96,7 +96,7 @@ namespace Ghostscript.NET
                 if (stream.Length > 32)
                 {
                     test = new byte[32];
-                    stream.Read(test, 0, 32);
+                    _ = stream.Read(test, 0, 32);
 
                     stream.Position = 0;
 

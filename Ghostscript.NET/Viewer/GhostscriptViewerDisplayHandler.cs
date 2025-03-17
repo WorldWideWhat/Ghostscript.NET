@@ -25,7 +25,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -37,7 +36,7 @@ namespace Ghostscript.NET.Viewer
 
         #region Private variables
 
-        private GhostscriptViewer _viewer;
+        private readonly GhostscriptViewer _viewer;
         private GhostscriptViewerImage _destImage;
         private IntPtr _srcImage;
         private uint _srcFormat;
@@ -80,7 +79,8 @@ namespace Ghostscript.NET.Viewer
         {
             if (_destImage != null)
             {
-                _destImage.Dispose(); _destImage = null;
+                _destImage.Dispose(); 
+                _destImage = null;
             }
 
             return 0;
@@ -96,7 +96,8 @@ namespace Ghostscript.NET.Viewer
 
             if (_destImage != null)
             {
-                _destImage.Dispose(); _destImage = null;
+                _destImage.Dispose(); 
+                _destImage = null;
             }
 
             _destImage = GhostscriptViewerImage.Create(width, height, raster, PixelFormat.Format24bppRgb);
@@ -116,7 +117,8 @@ namespace Ghostscript.NET.Viewer
 
             if (_destImage != null)
             {
-                _destImage.Dispose(); _destImage = null;
+                _destImage.Dispose(); 
+                _destImage = null;
             }
 
             _destImage = GhostscriptViewerImage.Create(width, height, raster, PixelFormat.Format24bppRgb);
@@ -155,7 +157,16 @@ namespace Ghostscript.NET.Viewer
 
                 IntPtr tempTile = Marshal.AllocHGlobal(_destImage.Stride * _destImage.Height);
 
-                ImageMemoryHelper.CopyImagePartFrom(_srcImage, tempTile, 0, 0, _destImage.Width, _destImage.Height, _srcStride, bytesPerPixel);
+                ImageMemoryHelper.CopyImagePartFrom(
+                    _srcImage, 
+                    tempTile, 
+                    0, 
+                    0, 
+                    _destImage.Width, 
+                    _destImage.Height, 
+                    _srcStride, 
+                    bytesPerPixel);
+
                 ImageMemoryHelper.FlipImageVertically(tempTile, _destImage.Scan0, _destImage.Height, _destImage.Stride);
 
                 Marshal.FreeHGlobal(tempTile);

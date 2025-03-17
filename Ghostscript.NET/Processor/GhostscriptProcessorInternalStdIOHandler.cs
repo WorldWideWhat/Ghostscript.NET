@@ -24,15 +24,14 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 
 namespace Ghostscript.NET.Processor
 {
     internal class GhostscriptProcessorInternalStdIOHandler : GhostscriptStdIO
     {
-        private StdInputEventHandler _input;
-        private StdOutputEventHandler _output;
-        private StdErrorEventHandler _error;
+        private readonly StdInputEventHandler _input;
+        private readonly StdOutputEventHandler _output;
+        private readonly StdErrorEventHandler _error;
 
         public GhostscriptProcessorInternalStdIOHandler(StdInputEventHandler input, StdOutputEventHandler output, StdErrorEventHandler error) : base(true, true, true) 
         {

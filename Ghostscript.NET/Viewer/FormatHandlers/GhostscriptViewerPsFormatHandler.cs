@@ -26,10 +26,6 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Drawing;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
 using Ghostscript.NET.Viewer.DSC;
 
@@ -51,7 +47,7 @@ namespace Ghostscript.NET.Viewer
         #region Private variables
 
         private DSCTokenizer _tokenizer;
-        private Dictionary<int, DSCToken> _pageTokens = new Dictionary<int, DSCToken>();
+        private Dictionary<int, DSCToken> _pageTokens = [];// new Dictionary<int, DSCToken>();
         private DSCToken _lastPageEnding;
 
         #endregion

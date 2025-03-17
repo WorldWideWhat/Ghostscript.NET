@@ -26,6 +26,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.WinAny.Interop;
 
 namespace Ghostscript.NET
@@ -40,8 +41,8 @@ namespace Ghostscript.NET
 
         private bool _disposed = false;
         private DynamicNativeLibrary _library;
-        private GhostscriptVersionInfo _version;
-        private bool _loadedFromMemory = false;
+        private readonly GhostscriptVersionInfo _version;
+        private readonly bool _loadedFromMemory = false;
         private int _revision;
 
         #endregion
@@ -55,11 +56,14 @@ namespace Ghostscript.NET
         /// <param name="library">Memory buffer representing native Ghostscript library.</param>
         public GhostscriptLibrary(byte[] library)
         {
+#if NETSTANDARD
             if (library == null)
             {
                 throw new ArgumentNullException("library");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(library);
+#endif
             // check if library is compatibile with a running process
             if (Environment.Is64BitProcess != NativeLibraryHelper.Is64BitLibrary(library))
             {
@@ -77,7 +81,7 @@ namespace Ghostscript.NET
             this.Initialize();
         }
 
-        #endregion
+#endregion
 
         #region Constructor - version
 
@@ -102,11 +106,17 @@ namespace Ghostscript.NET
         public GhostscriptLibrary(GhostscriptVersionInfo version, bool fromMemory)
         {
             // check if Ghostscript version is specified
+
+#if NETSTANDARD
             if (version == null)
             {
                 throw new ArgumentNullException("version");
+
             }
 
+#else
+            ArgumentNullException.ThrowIfNull(version);;
+#endif
             // check if specified Ghostscript native library exist on the disk
             if (!File.Exists(version.DllPath))
             {
@@ -142,7 +152,7 @@ namespace Ghostscript.NET
             this.Initialize();
         }
 
-        #endregion
+#endregion
 
         #region Destructor
 
@@ -210,7 +220,7 @@ namespace Ghostscript.NET
         public gsapi_run_file @gsapi_run_file = null;
         public gsapi_exit @gsapi_exit = null;
 
-        #endregion 
+        #endregion
 
         #region Initialize
 
@@ -332,31 +342,14 @@ namespace Ghostscript.NET
 
         #region Revision
 
-        public int Revision
-        {
-            get { return _revision; }
-        }
+        public int Revision => _revision;
 
         #endregion
 
         #region is_gsapi_set_arg_encoding
 
-        public bool is_gsapi_set_arg_encoding_supported
-        {
-            get
-            {
-                if (_revision >= 910)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+        public bool is_gsapi_set_arg_encoding_supported => (_revision >= 910);
 
         #endregion
-
     }
 }
