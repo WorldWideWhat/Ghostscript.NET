@@ -33,7 +33,7 @@ namespace Ghostscript.NET.Processor
     {
         #region Private constants
 
-        private readonly char[] EMPTY_SPACE_SPLIT = new char[] { ' ' };
+        private readonly char[] EMPTY_SPACE_SPLIT = [' '];
 
         #endregion
 
@@ -45,8 +45,8 @@ namespace Ghostscript.NET.Processor
         private GhostscriptStdIO _stdIO_Callback;
         private GhostscriptProcessorInternalStdIOHandler _internalStdIO_Callback;
         private gsapi_pool_callback _poolCallBack;
-        private StringBuilder _outputMessages = new StringBuilder();
-        private StringBuilder _errorMessages = new StringBuilder();
+        private StringBuilder _outputMessages = new();
+        private StringBuilder _errorMessages = new();
         private int _totalPages;
         private bool _isRunning = false;
         private bool _stopProcessing = false;
@@ -122,21 +122,28 @@ namespace Ghostscript.NET.Processor
 
         public GhostscriptProcessor(GhostscriptLibrary library, bool processorOwnsLibrary = false)
         {
+#if NETSTANDARD
             if (library == null)
             {
                 throw new ArgumentNullException("library");
             }
+#else
+            ArgumentNullException.ThrowIfNull(library);
+#endif
             _processorOwnsLibrary = processorOwnsLibrary;
             _gs = library;
         }
         
         public GhostscriptProcessor(byte[] library)
         {
+#if NETSTANDARD
             if (library == null)
             {
                 throw new ArgumentNullException("library");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(library);
+#endif
             _gs = new GhostscriptLibrary(library);
         }
 
@@ -153,11 +160,14 @@ namespace Ghostscript.NET.Processor
 
         public GhostscriptProcessor(GhostscriptVersionInfo version, bool fromMemory)
         {
+#if NETSTANDARD
             if (version == null)
             {
                 throw new ArgumentNullException("version");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(version);
+#endif
             _gs = new GhostscriptLibrary(version, fromMemory);
         }
 
@@ -246,11 +256,14 @@ namespace Ghostscript.NET.Processor
 
         public void StartProcessing(GhostscriptDevice device, GhostscriptStdIO stdIO_callback)
         {
+#if NETSTANDARD
             if (device == null)
             {
                 throw new ArgumentNullException("device");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(device);
+#endif
             this.StartProcessing(device.GetSwitches(), stdIO_callback);
         }
 
@@ -265,19 +278,22 @@ namespace Ghostscript.NET.Processor
         /// <param name="stdIO_callback">StdIO callback, can be set to null if you dont want to handle it.</param>
         public void StartProcessing(string[] args, GhostscriptStdIO stdIO_callback)
         {
+#if NETSTANDARD
             if (args == null)
             {
                 throw new ArgumentNullException("args");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(args);
+#endif
             if (args.Length < 3)
             {
-                throw new ArgumentOutOfRangeException("args");
+                throw new ArgumentOutOfRangeException(nameof(args));
             }
 
             for (int i = 0; i < args.Length; i++)
             {
-                args[i] = System.Text.Encoding.Default.GetString(System.Text.Encoding.UTF8.GetBytes(args[i]));
+                args[i] = Encoding.Default.GetString(Encoding.UTF8.GetBytes(args[i]));
             }
 
             _isRunning = true;
@@ -358,7 +374,7 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
+#endregion
 
         #region StopProcessing
 
@@ -373,14 +389,7 @@ namespace Ghostscript.NET.Processor
 
         private int Pool(IntPtr handle)
         {
-            if (_stopProcessing)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
+            return _stopProcessing ? -1 : 0;
         }
 
         #endregion
@@ -389,14 +398,13 @@ namespace Ghostscript.NET.Processor
 
         private void OnStdIoInput(out string input, int count)
         {
-            if (_stdIO_Callback != null)
-            {
-                _stdIO_Callback.StdIn(out input, count);
-            }
-            else
+            if(_stdIO_Callback is null)
             {
                 input = string.Empty;
+                return;
             }
+            
+            _stdIO_Callback.StdIn(out input, count);
         }
 
         #endregion
@@ -421,10 +429,7 @@ namespace Ghostscript.NET.Processor
                     rIndex = _outputMessages.ToString().IndexOf("\r\n");
                 }
 
-                if (_stdIO_Callback != null)
-                {
-                    _stdIO_Callback.StdOut(output);
-                }
+                _stdIO_Callback?.StdOut(output);
             }
         }
 
@@ -450,10 +455,7 @@ namespace Ghostscript.NET.Processor
                     rIndex = _errorMessages.ToString().IndexOf("\r\n");
                 }
 
-                if (_stdIO_Callback != null)
-                {
-                    _stdIO_Callback.StdError(error);
-                }
+                _stdIO_Callback?.StdError(error);
             }
         }
 
@@ -490,20 +492,13 @@ namespace Ghostscript.NET.Processor
 
         #region IsRunning
 
-        public bool IsRunning
-        {
-            get { return _isRunning; }
-        }
+        public bool IsRunning => _isRunning;
 
         #endregion
 
         #region IsStopping
 
-        public bool IsStopping
-        {
-            get { return _isRunning && _stopProcessing; }
-        }
-
+        public bool IsStopping =>_isRunning && _stopProcessing;
         #endregion
 
     }

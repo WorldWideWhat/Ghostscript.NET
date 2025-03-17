@@ -64,9 +64,9 @@ namespace Ghostscript.NET.Processor
             CurrentPage = totalPages;
         }
 
-        public int CurrentPage { get; private set; }
+        public int CurrentPage { get; }
 
-        public int TotalPages {  get; private set; }
+        public int TotalPages { get; }
     }
 
     #endregion
@@ -80,7 +80,7 @@ namespace Ghostscript.NET.Processor
             Message = errorMessage;
         }
 
-        public string Message {  get; private set; }
+        public string Message {  get; }
     }
 
     #endregion
