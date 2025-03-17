@@ -38,9 +38,9 @@ namespace Ghostscript.NET.Rasterizer
         #region Private variables
 
         private bool _disposed = false;
-        private GhostscriptViewer _viewer;
+        private GhostscriptViewer? _viewer;
         private Image _lastRasterizedImage = null;
-        private GhostscriptViewerState _gsViewState;
+        private readonly GhostscriptViewerState _gsViewState;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace Ghostscript.NET.Rasterizer
 
         public GhostscriptRasterizer(GhostscriptStdIO stdIo)
         {
-            _viewer = new GhostscriptViewer();
+            _viewer = new();
             _viewer.ShowPageAfterOpen = false;
             _viewer.ProgressiveUpdate = false;
             _viewer.DisplayPage += new GhostscriptViewerViewEventHandler(_viewer_DisplayPage);
@@ -70,11 +70,14 @@ namespace Ghostscript.NET.Rasterizer
 
         public GhostscriptRasterizer(GhostscriptViewer viewerInstance)
         {
+#if NETSTANDARD
             if (viewerInstance == null)
             {
                 throw new ArgumentNullException("viewerInstance");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(viewerInstance);
+#endif
             _viewer = viewerInstance;
             _gsViewState = _viewer.SaveState();
             _viewer.ProgressiveUpdate = false;
@@ -138,15 +141,18 @@ namespace Ghostscript.NET.Rasterizer
 
         public void Open(Stream stream)
         {
+#if NETSTANDARD
             if (stream == null)
             {
                 throw new ArgumentNullException("stream");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(stream);
+#endif
             this.Open(stream, GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), false);
         }
 
-        #endregion
+#endregion
 
         #region Open - path
 
@@ -166,6 +172,7 @@ namespace Ghostscript.NET.Rasterizer
 
         public void Open(Stream stream, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
+#if NETSTANDARD
             if (stream == null)
             {
                 throw new ArgumentNullException("stream");
@@ -175,7 +182,10 @@ namespace Ghostscript.NET.Rasterizer
             {
                 throw new ArgumentNullException("versionInfo");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(stream);
+            ArgumentNullException.ThrowIfNull(versionInfo);
+#endif
             if (_gsViewState == null)
             {
                 _viewer.Open(stream, versionInfo, dllFromMemory);
@@ -192,12 +202,14 @@ namespace Ghostscript.NET.Rasterizer
             {
                 throw new FileNotFoundException("Could not find input file.", path);
             }
-
+#if NETSTANDARD
             if (versionInfo == null)
             {
                 throw new ArgumentNullException("versionInfo");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(versionInfo);
+#endif
             if (_gsViewState == null)
             {
                 _viewer.Open(path, versionInfo, dllFromMemory);
@@ -210,6 +222,7 @@ namespace Ghostscript.NET.Rasterizer
 
         public void Open(Stream stream, byte[] library)
         {
+#if NETSTANDARD
             if (stream == null)
             {
                 throw new ArgumentNullException("stream");
@@ -219,6 +232,10 @@ namespace Ghostscript.NET.Rasterizer
             {
                 throw new ArgumentNullException("library");
             }
+#else
+            ArgumentNullException.ThrowIfNull(stream);
+            ArgumentNullException.ThrowIfNull(library);
+#endif
 
             if (_gsViewState == null)
             {
@@ -236,12 +253,14 @@ namespace Ghostscript.NET.Rasterizer
             {
                 throw new FileNotFoundException("Couldn't find input file.", path);
             }
-
+#if NETSTANDARD
             if (library == null)
             {
                 throw new ArgumentNullException("library");
             }
-
+#else
+            ArgumentNullException.ThrowIfNull(library);
+#endif
             if (_gsViewState == null)
             {
                 _viewer.Open(path, library);
